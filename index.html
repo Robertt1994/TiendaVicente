@@ -11,17 +11,16 @@
         .logo span { color: #00ff00; }
         .hero { padding: 40px 20px; text-align: left; }
         .hero h1 { color: #00ff00; font-size: 35px; line-height: 1; text-transform: uppercase; margin: 0; }
-        .filtros { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; }
-        .btn-filtro { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; white-space: nowrap; }
-        .active { background: #00ff00; color: black; }
+        .filtros { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; position: sticky; top: 0; background: black; z-index: 500; }
+        .btn-filtro { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; white-space: nowrap; cursor: pointer; }
+        .btn-filtro.active { background: #00ff00; color: black; }
         .galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .card { background: #f9f9f9; color: black; border-radius: 15px; padding: 10px; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card { background: #f9f9f9; color: black; border-radius: 15px; padding: 10px; text-align: left; transition: 0.3s; }
         .card img { width: 100%; border-radius: 10px; height: 160px; object-fit: cover; }
         .tag { background: black; color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; display: inline-block; margin: 8px 0 4px 0; }
         .modelo-txt { margin: 0; font-size: 14px; font-weight: bold; }
         .precio-txt { margin: 0; font-weight: bold; font-size: 16px; }
-        .btn-ws { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 15px; border-radius: 30px; text-decoration: none; font-weight: bold; width: 85%; display: flex; justify-content: center; align-items: center; gap: 10px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 16px; }
-        .btn-ws svg { width: 20px; height: 20px; fill: white; }
+        .btn-ws { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 15px; border-radius: 30px; text-decoration: none; font-weight: bold; width: 85%; display: flex; justify-content: center; align-items: center; gap: 10px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
@@ -36,40 +35,53 @@
 </div>
 
 <div class="filtros">
-    <button class="btn-filtro active">TODOS</button>
-    <button class="btn-filtro">GYM</button>
-    <button class="btn-filtro">BOTAS</button>
-    <button class="btn-filtro">CONJUNTOS</button>
+    <button class="btn-filtro active" onclick="filtrar('todos')">TODOS</button>
+    <button class="btn-filtro" onclick="filtrar('gym')">GYM</button>
+    <button class="btn-filtro" onclick="filtrar('botas')">BOTAS</button>
+    <button class="btn-filtro" onclick="filtrar('conjunto')">CONJUNTOS</button>
 </div>
 
-<div class="galeria">
+<div class="galeria" id="contenedor">
     <script>
-        // Configuración para 15 fotos por cada una de tus categorías
-        const categorias = [
-            { nombre: 'GYM', prefijo: 'gym' },        // Busca gym1.jpg, gym2.jpg...
-            { nombre: 'BOTAS', prefijo: 'bota' },     // Busca bota1.jpg, bota2.jpg...
-            { nombre: 'CONJUNTO', prefijo: 'conjunto' } // Busca conjunto1.jpg...
+        const cats = [
+            { n: 'GYM', p: 'gym', c: 'gym' },
+            { n: 'BOTAS', p: 'bota', c: 'botas' },
+            { n: 'CONJUNTO', p: 'conjunto', c: 'conjunto' }
         ];
 
-        categorias.forEach(cat => {
+        cats.forEach(cat => {
             for(let i=1; i<=15; i++) {
                 document.write(`
-                    <div class="card" id="${cat.prefijo}${i}" style="display: block;">
-                        <img src="${cat.prefijo}${i}.jpg" onerror="document.getElementById('${cat.prefijo}${i}').style.display='none'">
-                        <div class="tag">${cat.nombre}</div>
+                    <div class="card item-tienda ${cat.c}" id="${cat.p}${i}">
+                        <img src="${cat.p}${i}.jpg" onerror="this.parentElement.remove()">
+                        <div class="tag">${cat.n}</div>
                         <p class="modelo-txt">Modelo ${i}</p>
                         <p class="precio-txt">$ --</p>
                     </div>
                 `);
             }
         });
+
+        function filtrar(categoria) {
+            // Actualizar botones
+            document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filtrar cards
+            document.querySelectorAll('.item-tienda').forEach(card => {
+                if(categoria === 'todos' || card.classList.contains(categoria)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
     </script>
 </div>
 
 <div style="height: 110px;"></div>
 
 <a href="https://wa.me/584264270878" class="btn-ws" target="_blank">
-    <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.747-2.874-2.512-2.96-2.626-.088-.113-.716-.953-.716-1.819 0-.866.454-1.292.615-1.469.162-.177.355-.222.474-.222.118 0 .237 0 .341.005.109.004.254-.041.399.308.145.35.495 1.204.538 1.292.044.088.072.19.014.308-.058.118-.088.19-.173.289-.084.1-.177.223-.254.302-.084.084-.173.177-.074.347.099.17.441.728.947 1.178.652.58 1.203.76 1.383.844.18.084.285.07.391-.052.106-.123.454-.529.575-.709.121-.18.243-.151.409-.09.166.061 1.056.498 1.238.588.182.09.303.136.347.21.045.074.045.428-.099.833z"/></svg>
     HABLAR CON VICENTE
 </a>
 
