@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VICENTE GÓMEZ | Store Elite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #00ff88; --bg: #ffffff; --card-bg: #f8f8f8; --text: #1a1a1a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+        header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: #000; color: #fff; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 900; font-size: 1.2rem; text-transform: uppercase; }
+        .logo span { color: var(--primary); }
+        .side-menu { position: fixed; top: 0; right: -100%; width: 300px; height: 100%; background: #000; color: #fff; z-index: 2000; transition: 0.4s; padding: 40px 20px; }
+        .side-menu.open { right: 0; }
+        .hero { background: #000; height: 240px; display: flex; flex-direction: column; justify-content: flex-end; padding: 30px 20px; position: relative; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url('bota-portada.jpg') center/cover; opacity: 0.6; }
+        .hero h1 { position: relative; color: var(--primary); font-size: 1.8rem; font-weight: 900; }
+        .filter-container { padding: 15px 20px; display: flex; gap: 10px; overflow-x: auto; background: #fff; sticky; top: 60px; z-index: 900; }
+        .filter-btn { padding: 10px 22px; border-radius: 25px; border: none; background: #eee; font-weight: 700; font-size: 0.75rem; white-space: nowrap; }
+        .filter-btn.active { background: #000; color: var(--primary); }
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 15px 120px 15px; }
+        .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid #eee; display: block; }
+        .img-holder { width: 100%; height: 170px; background: #eee; }
+        .img-holder img { width: 100%; height: 100%; object-fit: cover; }
+        .card-info { padding: 12px; }
+        .card-cat { font-size: 0.55rem; text-transform: uppercase; color: var(--primary); font-weight: 800; background: #000; padding: 2px 6px; border-radius: 4px; }
+        .cart-float { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25D366; color: #fff; padding: 16px 35px; border-radius: 50px; font-weight: 800; text-decoration: none; z-index: 1500; text-align: center; width: 80%; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">VICENTE<span>x</span>GÓMEZ</div>
+        <i class="fas fa-th-large" onclick="toggleMenu()"></i>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <h1>EQUIPA TU<br>VICTORIA</h1>
+    </section>
+
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filter('todos', this)">TODOS</button>
+        <button class="filter-btn" onclick="filter('gym', this)">GYM</button>
+        <button class="filter-btn" onclick="filter('botas', this)">BOTAS</button>
+        <button class="filter-btn" onclick="filter('conjuntos', this)">CONJUNTOS</button>
+    </div>
+
+    <main class="products-grid" id="grid"></main>
+
+    <a href="https://wa.me/584264270878" class="cart-float">
+        <i class="fab fa-whatsapp"></i> HABLAR CON VICENTE
+    </a>
+
+    <script>
+        const categorias = ['gym', 'botas', 'conjuntos', 'perfumes', 'boxer', 'medias'];
+        const grid = document.getElementById('grid');
+
+        function cargarTienda(filtro = 'todos') {
+            grid.innerHTML = '';
+            categorias.forEach(cat => {
+                if (filtro !== 'todos' && filtro !== cat) return;
+                for (let i = 1; i <= 10; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="img-holder">
+                            <img src="${cat}${i}.jpg" onload="this.parentElement.parentElement.style.display='block'" onerror="this.parentElement.parentElement.style.display='none'">
+                        </div>
+                        <div class="card-info">
+                            <span class="card-cat">${cat}</span>
+                            <h3 style="font-size:0.8rem; margin:5px 0;">Modelo ${i}</h3>
+                            <p style="font-weight:900;">$ --</p>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        function filter(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            cargarTienda(cat);
+        }
+
+        function toggleMenu() { /* Lógica de menú */ }
+        
+        cargarTienda();
+    </script>
+</body>
+</html>
