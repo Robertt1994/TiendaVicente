@@ -10,28 +10,46 @@
         .logo { font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .logo span { color: #00ff00; }
         
-        /* ESTILO DE LA PORTADA */
-        .portada-img { width: 100%; max-height: 300px; object-fit: cover; display: block; }
+        /* PORTADA */
+        .portada-img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         
         .hero { padding: 20px; text-align: left; }
         .hero h1 { color: #00ff00; font-size: 35px; line-height: 1; text-transform: uppercase; margin: 0; }
-        .filtros { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; position: sticky; top: 0; background: black; z-index: 500; }
-        .btn-filtro { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; white-space: nowrap; cursor: pointer; }
+        
+        .filtros { display: flex; gap: 10px; overflow-x: auto; padding: 15px 20px; scrollbar-width: none; position: sticky; top: 0; background: black; z-index: 500; }
+        .btn-filtro { background: #333; color: white; border: none; padding: 10px 18px; border-radius: 20px; font-weight: bold; white-space: nowrap; cursor: pointer; font-size: 13px; }
         .btn-filtro.active { background: #00ff00; color: black; }
-        .galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .card { background: #f9f9f9; color: black; border-radius: 15px; padding: 10px; text-align: left; }
-        .card img { width: 100%; border-radius: 10px; height: 160px; object-fit: cover; }
-        .tag { background: black; color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; display: inline-block; margin: 8px 0 4px 0; }
-        .modelo-txt { margin: 0; font-size: 14px; font-weight: bold; }
-        .precio-txt { margin: 0; font-weight: bold; font-size: 16px; }
-        .btn-ws { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 15px; border-radius: 30px; text-decoration: none; font-weight: bold; width: 85%; display: flex; justify-content: center; align-items: center; gap: 10px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        .galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        
+        /* TARJETA CORREGIDA */
+        .card { background: #fff; color: black; border-radius: 15px; padding: 8px; text-align: left; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* TÍTULO CORREGIDO PARA QUE NO SE CORTE */
+        .card h3 { 
+            margin: 5px 0; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            text-align: center; 
+            white-space: normal; /* Permite que el texto baje de línea si es largo */
+            word-wrap: break-word; 
+            line-height: 1.2;
+            min-height: 34px; /* Espacio para dos líneas */
+        }
+        
+        .card img { width: 100%; border-radius: 8px; height: 140px; object-fit: contain; background: #fff; }
+        .tag { background: black; color: white; font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: bold; display: inline-block; width: fit-content; margin: 5px 0; }
+        .modelo-txt { margin: 0; font-size: 12px; font-weight: bold; color: #333; }
+        .precio-txt { margin: 2px 0 0 0; font-weight: bold; font-size: 15px; color: #000; }
+        
+        .btn-ws { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 14px; border-radius: 30px; text-decoration: none; font-weight: bold; width: 85%; display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 15px; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">VICENTE<span>X</span>GÓMEZ</div>
-    <div style="font-size: 24px;">田</div>
+    <div style="font-size: 22px;">田</div>
 </header>
 
 <img src="portada.jpg" class="portada-img" onerror="this.style.display='none'">
@@ -41,24 +59,29 @@
 </div>
 
 <div class="filtros">
-    <button class="btn-filtro active" onclick="filtrar('todos')">TODOS</button>
-    <button class="btn-filtro" onclick="filtrar('gym')">GYM</button>
-    <button class="btn-filtro" onclick="filtrar('botas')">BOTAS</button>
-    <button class="btn-filtro" onclick="filtrar('conjunto')">CONJUNTOS</button>
+    <button class="btn-filtro active" onclick="filtrar('todos', event)">TODOS</button>
+    <button class="btn-filtro" onclick="filtrar('gym', event)">GYM</button>
+    <button class="btn-filtro" onclick="filtrar('botas', event)">BOTAS</button>
+    <button class="btn-filtro" onclick="filtrar('conjunto', event)">CONJUNTOS</button>
 </div>
 
-<div class="galeria" id="contenedor">
+<div class="galeria">
     <script>
-        const cats = [
+        const categorias = [
             { n: 'GYM', p: 'gym', c: 'gym' },
             { n: 'BOTAS', p: 'bota', c: 'botas' },
             { n: 'CONJUNTO', p: 'conjunto', c: 'conjunto' }
         ];
 
-        cats.forEach(cat => {
+        // Definimos algunos nombres de ejemplo para que veas que no se cortan
+        const nombres = ["AJUSTABLE", "CUERDA DEPORTIVA", "ACCESORIO GYM", "CONJUNTO PRO"];
+
+        categorias.forEach(cat => {
             for(let i=1; i<=15; i++) {
+                let nombreRandom = nombres[Math.floor(Math.random() * nombres.length)];
                 document.write(`
                     <div class="card item-tienda ${cat.c}" id="${cat.p}${i}">
+                        <h3>${nombreRandom}</h3>
                         <img src="${cat.p}${i}.jpg" onerror="this.parentElement.remove()">
                         <div class="tag">${cat.n}</div>
                         <p class="modelo-txt">Modelo ${i}</p>
@@ -68,13 +91,13 @@
             }
         });
 
-        function filtrar(categoria) {
+        function filtrar(categoria, event) {
             document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             
             document.querySelectorAll('.item-tienda').forEach(card => {
                 if(categoria === 'todos' || card.classList.contains(categoria)) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
@@ -83,7 +106,7 @@
     </script>
 </div>
 
-<div style="height: 110px;"></div>
+<div style="height: 100px;"></div>
 
 <a href="https://wa.me/584264270878" class="btn-ws" target="_blank">
     HABLAR CON VICENTE
