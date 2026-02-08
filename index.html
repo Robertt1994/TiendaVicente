@@ -9,13 +9,17 @@
         header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .logo span { color: #00ff00; }
-        .hero { padding: 40px 20px; text-align: left; }
+        
+        /* ESTILO DE LA PORTADA */
+        .portada-img { width: 100%; max-height: 300px; object-fit: cover; display: block; }
+        
+        .hero { padding: 20px; text-align: left; }
         .hero h1 { color: #00ff00; font-size: 35px; line-height: 1; text-transform: uppercase; margin: 0; }
         .filtros { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; position: sticky; top: 0; background: black; z-index: 500; }
         .btn-filtro { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .btn-filtro.active { background: #00ff00; color: black; }
         .galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .card { background: #f9f9f9; color: black; border-radius: 15px; padding: 10px; text-align: left; transition: 0.3s; }
+        .card { background: #f9f9f9; color: black; border-radius: 15px; padding: 10px; text-align: left; }
         .card img { width: 100%; border-radius: 10px; height: 160px; object-fit: cover; }
         .tag { background: black; color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; display: inline-block; margin: 8px 0 4px 0; }
         .modelo-txt { margin: 0; font-size: 14px; font-weight: bold; }
@@ -29,6 +33,8 @@
     <div class="logo">VICENTE<span>X</span>GÓMEZ</div>
     <div style="font-size: 24px;">田</div>
 </header>
+
+<img src="portada.jpg" class="portada-img" onerror="this.style.display='none'">
 
 <div class="hero">
     <h1>EQUIPA TU<br>VICTORIA</h1>
@@ -63,11 +69,9 @@
         });
 
         function filtrar(categoria) {
-            // Actualizar botones
             document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             
-            // Filtrar cards
             document.querySelectorAll('.item-tienda').forEach(card => {
                 if(categoria === 'todos' || card.classList.contains(categoria)) {
                     card.style.display = 'block';
