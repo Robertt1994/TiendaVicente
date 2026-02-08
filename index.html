@@ -5,44 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VICENTE X GÓMEZ</title>
     <style>
-        body { background-color: #000; color: white; font-family: 'Arial', sans-serif; margin: 0; text-align: center; }
+        body { background-color: #000; color: white; font-family: 'Arial Black', sans-serif; margin: 0; text-align: center; }
         header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: bold; font-size: 20px; text-transform: uppercase; }
         .logo span { color: #00ff00; }
-        
-        /* PORTADA */
         .portada-img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
-        
-        .hero { padding: 20px; text-align: left; }
-        .hero h1 { color: #00ff00; font-size: 35px; line-height: 1; text-transform: uppercase; margin: 0; }
-        
+        .hero { padding: 30px 20px; text-align: left; }
+        .hero h1 { color: #00ff00; font-size: 38px; line-height: 0.9; text-transform: uppercase; margin: 0; font-style: italic; }
         .filtros { display: flex; gap: 10px; overflow-x: auto; padding: 15px 20px; scrollbar-width: none; position: sticky; top: 0; background: black; z-index: 500; }
-        .btn-filtro { background: #333; color: white; border: none; padding: 10px 18px; border-radius: 20px; font-weight: bold; white-space: nowrap; cursor: pointer; font-size: 13px; }
+        .btn-filtro { background: #222; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; white-space: nowrap; cursor: pointer; font-size: 12px; text-transform: uppercase; }
         .btn-filtro.active { background: #00ff00; color: black; }
-        
         .galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
-        
-        /* TARJETA CORREGIDA */
-        .card { background: #fff; color: black; border-radius: 15px; padding: 8px; text-align: left; display: flex; flex-direction: column; overflow: hidden; }
-        
-        /* TÍTULO CORREGIDO PARA QUE NO SE CORTE */
-        .card h3 { 
-            margin: 5px 0; 
-            font-size: 14px; 
-            text-transform: uppercase; 
-            text-align: center; 
-            white-space: normal; /* Permite que el texto baje de línea si es largo */
-            word-wrap: break-word; 
-            line-height: 1.2;
-            min-height: 34px; /* Espacio para dos líneas */
-        }
-        
-        .card img { width: 100%; border-radius: 8px; height: 140px; object-fit: contain; background: #fff; }
-        .tag { background: black; color: white; font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: bold; display: inline-block; width: fit-content; margin: 5px 0; }
-        .modelo-txt { margin: 0; font-size: 12px; font-weight: bold; color: #333; }
-        .precio-txt { margin: 2px 0 0 0; font-weight: bold; font-size: 15px; color: #000; }
-        
-        .btn-ws { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 14px; border-radius: 30px; text-decoration: none; font-weight: bold; width: 85%; display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 15px; }
+        .card { background: #fff; color: #000; border-radius: 18px; padding: 10px; text-align: left; display: flex; flex-direction: column; }
+        .card h3 { margin: 5px 0; font-size: 13px; text-transform: uppercase; text-align: center; line-height: 1.1; min-height: 30px; color: #111; word-wrap: break-word; white-space: normal; }
+        .card img { width: 100%; border-radius: 10px; height: 150px; object-fit: contain; background: #fff; }
+        .tag { background: #000; color: #fff; font-size: 9px; padding: 3px 8px; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 8px; width: fit-content; }
+        .modelo-txt { margin: 4px 0 0 0; font-size: 11px; color: #666; }
+        .precio-txt { margin: 0; font-weight: 900; font-size: 17px; color: #000; }
+        .btn-ws { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 16px; border-radius: 40px; text-decoration: none; font-weight: bold; width: 85%; display: flex; justify-content: center; align-items: center; gap: 10px; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.6); font-size: 14px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -55,33 +35,30 @@
 <img src="portada.jpg" class="portada-img" onerror="this.style.display='none'">
 
 <div class="hero">
-    <h1>EQUIPA TU<br>VICTORIA</h1>
+    <h1>TODO PARA<br>TU NIVEL</h1>
 </div>
 
 <div class="filtros">
-    <button class="btn-filtro active" onclick="filtrar('todos', event)">TODOS</button>
-    <button class="btn-filtro" onclick="filtrar('gym', event)">GYM</button>
-    <button class="btn-filtro" onclick="filtrar('botas', event)">BOTAS</button>
-    <button class="btn-filtro" onclick="filtrar('conjunto', event)">CONJUNTOS</button>
+    <button class="btn-filtro active" onclick="filtrar('todos', this)">TODOS</button>
+    <button class="btn-filtro" onclick="filtrar('gym', this)">GYM</button>
+    <button class="btn-filtro" onclick="filtrar('botas', this)">BOTAS</button>
+    <button class="btn-filtro" onclick="filtrar('conjunto', this)">CONJUNTOS</button>
 </div>
 
-<div class="galeria">
+<div class="galeria" id="contenedor">
     <script>
+        // Configuración de nombres por sección para evitar mezclas
         const categorias = [
-            { n: 'GYM', p: 'gym', c: 'gym' },
-            { n: 'BOTAS', p: 'bota', c: 'botas' },
-            { n: 'CONJUNTO', p: 'conjunto', c: 'conjunto' }
+            { n: 'GYM', p: 'gym', c: 'gym', titulo: 'ACCESORIO GYM' },
+            { n: 'BOTAS', p: 'bota', c: 'botas', titulo: 'BOTAS PREMIUM' },
+            { n: 'CONJUNTO', p: 'conjunto', c: 'conjunto', titulo: 'CONJUNTO EXCLUSIVO' }
         ];
-
-        // Definimos algunos nombres de ejemplo para que veas que no se cortan
-        const nombres = ["AJUSTABLE", "CUERDA DEPORTIVA", "ACCESORIO GYM", "CONJUNTO PRO"];
 
         categorias.forEach(cat => {
             for(let i=1; i<=15; i++) {
-                let nombreRandom = nombres[Math.floor(Math.random() * nombres.length)];
                 document.write(`
                     <div class="card item-tienda ${cat.c}" id="${cat.p}${i}">
-                        <h3>${nombreRandom}</h3>
+                        <h3>${cat.titulo}</h3>
                         <img src="${cat.p}${i}.jpg" onerror="this.parentElement.remove()">
                         <div class="tag">${cat.n}</div>
                         <p class="modelo-txt">Modelo ${i}</p>
@@ -91,10 +68,9 @@
             }
         });
 
-        function filtrar(categoria, event) {
+        function filtrar(categoria, boton) {
             document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            
+            boton.classList.add('active');
             document.querySelectorAll('.item-tienda').forEach(card => {
                 if(categoria === 'todos' || card.classList.contains(categoria)) {
                     card.style.display = 'flex';
@@ -106,7 +82,7 @@
     </script>
 </div>
 
-<div style="height: 100px;"></div>
+<div style="height: 110px;"></div>
 
 <a href="https://wa.me/584264270878" class="btn-ws" target="_blank">
     HABLAR CON VICENTE
